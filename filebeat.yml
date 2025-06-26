@@ -6,6 +6,11 @@ filebeat.inputs:
     json.add_error_key: true
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
+  username: "elastic"
+  password: "changeme"
   index: "logs-sidecar-%{+yyyy.MM.dd}"
+
+setup.template.name: "logs-sidecar"
+setup.template.pattern: "logs-sidecar-*"
 setup.kibana:
   host: "http://kibana:5601"

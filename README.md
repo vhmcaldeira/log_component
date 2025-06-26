@@ -43,3 +43,27 @@ O Filebeat irá ler automaticamente os arquivos presentes nesse diretório e env
 - Acesse o Elasticsearch em: [http://localhost:9200](http://localhost:9200)
 
 Agora você pode explorar os logs coletados e visualizar dashboards pelo Kibana.
+
+## Autenticação e acesso seguro
+
+Com a stack subida, o Elasticsearch inicia com segurança ativada e define a senha do usuário `elastic` como `changeme` (variável `ELASTIC_PASSWORD`).
+
+Caso prefira gerar um token de acesso, execute:
+
+```bash
+docker-compose exec elasticsearch bin/elasticsearch-create-enrollment-token -s kibana
+```
+
+Kibana e Filebeat já estão configurados para se autenticar usando `elastic` / `changeme`.
+
+### Acessando o Kibana
+
+Acesse [http://localhost:5601](http://localhost:5601) no navegador e faça login com `elastic` / `changeme`.
+
+### Testando a conexão com o Elasticsearch
+
+Execute o comando abaixo para verificar o acesso usando autenticação:
+
+```bash
+curl -u elastic:changeme http://localhost:9200
+```
