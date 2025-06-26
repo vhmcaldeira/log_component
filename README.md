@@ -60,7 +60,8 @@ Com a stack subida, o Elasticsearch inicia com segurança ativada e define a sen
    ```
    Gere o token de serviço do Kibana:
    ```bash
-   elasticsearch-create-enrollment-token --scope kibana
+   elasticsearch-service-tokens create elastic/kibana kibana-token
+
    ```
    Copie o token retornado e defina em um arquivo `.env`:
    ```env
