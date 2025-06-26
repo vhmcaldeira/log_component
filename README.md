@@ -5,7 +5,7 @@ Este projeto demonstra como configurar uma aplicação Laravel utilizando Docker
 ## Pré-requisitos
 
 - Docker e Docker Compose instalados em sua máquina.
-- Acesso à internet para que o Docker baixe as imagens necessárias e o Composer obtenha o Laravel durante o build.
+- Acesso à internet para que o Docker baixe as imagens necessárias e para instalar o Laravel com o Composer antes de subir os containers.
 
 ## Subindo o projeto
 
@@ -16,7 +16,13 @@ Este projeto demonstra como configurar uma aplicação Laravel utilizando Docker
 docker compose up -d
 ```
 
-A primeira execução pode demorar, pois o Composer irá baixar o Laravel dentro do container `app`.
+Certifique-se de que o código do Laravel já está presente na raiz deste repositório. Caso ainda não exista, execute:
+
+```bash
+composer create-project laravel/laravel .
+```
+
+Após a instalação, você pode subir os containers normalmente.
 
 3. Acesse `http://localhost` no navegador para verificar se a aplicação Laravel está rodando.
 
@@ -24,7 +30,7 @@ A primeira execução pode demorar, pois o Composer irá baixar o Laravel dentro
 
 ## Estrutura dos Containers
 
-- **app**: container PHP-FPM que faz o build do Laravel durante a criação da imagem.
+- **app**: container PHP-FPM que utiliza o código do Laravel presente na raiz do repositório.
 - **nginx**: servidor web que expõe a aplicação na porta 80.
 - **mysql**: banco de dados MySQL na porta 3306.
 - **elasticsearch**: serviço de busca e armazenamento de logs.

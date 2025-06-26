@@ -20,10 +20,10 @@ WORKDIR /var/www
 # Copy existing application directory contents
 COPY . /var/www
 
-# Install Laravel (latest)
-RUN if [ ! -f artisan ]; then \
-    composer create-project laravel/laravel . --prefer-dist; \
-    fi
+# The Laravel application should already be present in the repository.
+# Previously the image downloaded Laravel during build time which
+# prevented editing the source outside the container. This step was
+# removed so the existing project is used as-is.
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www
