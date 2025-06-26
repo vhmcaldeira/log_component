@@ -85,3 +85,63 @@ Execute o comando abaixo para verificar o acesso usando autenticação:
 ```bash
 curl -u elastic:changeme http://localhost:9200
 ```
+
+## 🔐 Configuração segura do Kibana com Elasticsearch
+
+Para rodar o Kibana com autenticação correta no Elasticsearch (sem usar o usuário `elastic`, que é bloqueado), siga os passos abaixo:
+
+### 1. Suba o Elasticsearch
+
+```bash
+docker compose up -d elasticsearch
+```
+
+### 2. Gere o token de service account para o Kibana
+
+Acesse o container do Elasticsearch:
+
+```bash
+docker exec -it elasticsearch bash
+```
+
+Dentro do container, execute:
+
+```bash
+elasticsearch-service-tokens create kibana kibana-token
+```
+
+O comando irá retornar algo como:
+
+```bash
+kibana/kibana-token: AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYS10b2tlbgAAAAC...
+```
+
+Copie apenas o valor após os dois pontos (:), que é o token JWT.
+
+### 3. Crie um arquivo .env no diretório raiz do projeto com o seguinte conteúdo:
+
+```env
+KIBANA_SERVICE_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYS10b2tlbgAAAAC...
+```
+
+### 4. Garanta que o docker-compose.yml do Kibana esteja configurado assim:
+
+```yaml
+environment:
+  - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+  - ELASTICSEARCH_SERVICEACCOUNTTOKEN=${KIBANA_SERVICE_TOKEN}
+```
+
+### 5. Suba os demais serviços
+
+```bash
+docker compose up -d
+```
+
+### 6. Acesse o Kibana
+
+Abra o navegador e vá para:
+
+```arduino
+http://localhost:5601
+```
