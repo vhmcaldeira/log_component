@@ -48,13 +48,31 @@ Agora você pode explorar os logs coletados e visualizar dashboards pelo Kibana.
 
 Com a stack subida, o Elasticsearch inicia com segurança ativada e define a senha do usuário `elastic` como `changeme` (variável `ELASTIC_PASSWORD`).
 
-Caso prefira gerar um token de acesso, execute:
+### ⚙️ Geração do token para Kibana
 
-```bash
-docker-compose exec elasticsearch bin/elasticsearch-create-enrollment-token -s kibana
-```
+1. Após subir o container do Elasticsearch com:
+   ```bash
+   docker compose up -d elasticsearch
+   ```
+   Acesse o container:
+   ```bash
+   docker exec -it elasticsearch bash
+   ```
+   Gere o token de serviço do Kibana:
+   ```bash
+   elasticsearch-create-enrollment-token --scope kibana
+   ```
+   Copie o token retornado e defina em um arquivo `.env`:
+   ```env
+   KIBANA_SERVICE_TOKEN=eyJ2ZXIiOiI... (cole aqui)
+   ```
+   Suba os serviços restantes:
+   ```bash
+   docker compose up -d
+   ```
+   Acesse o Kibana em: http://localhost:5601
 
-Kibana e Filebeat já estão configurados para se autenticar usando `elastic` / `changeme`.
+Filebeat continua autenticando com `elastic` / `changeme`.
 
 ### Acessando o Kibana
 
