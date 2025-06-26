@@ -1,16 +1,22 @@
 filebeat.inputs:
   - type: log
+    enabled: true
     paths:
       - /app/logs/*.log
     json.keys_under_root: true
     json.add_error_key: true
+
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
-  username: "elastic"
-  password: "changeme"
-  index: "logs-sidecar-%{+yyyy.MM.dd}"
+  protocol: "http"
+  api_key: ${ELASTIC_API_KEY}  # ou use service_token se preferir
+  # service_token: ${FILEBEAT_SERVICE_TOKEN}
 
-setup.template.name: "logs-sidecar"
-setup.template.pattern: "logs-sidecar-*"
 setup.kibana:
   host: "http://kibana:5601"
+
+setup.ilm.enabled: false
+monitoring.enabled: true
+monitoring.cluster_uuid: ""
+
+logging.level: info
