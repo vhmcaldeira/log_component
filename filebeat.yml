@@ -1,0 +1,11 @@
+filebeat.inputs:
+  - type: log
+    paths:
+      - /app/logs/*.log
+    json.keys_under_root: true
+    json.add_error_key: true
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "logs-sidecar-%{+yyyy.MM.dd}"
+setup.kibana:
+  host: "http://kibana:5601"
